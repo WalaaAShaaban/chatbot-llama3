@@ -13,7 +13,7 @@ from langchain.llms import Ollama
 from langchain_core.prompts import PromptTemplate
 
 
-class model :
+class ChatbotModel :
 
     docs = ["https://lilianweng.github.io/posts/2023-06-23-agent/#task-decomposition",
             "/home/walaa-shaban/Documents/project/chatbot-llama3/input/Introduction to Machine Learning with Python.pdf",
