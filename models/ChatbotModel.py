@@ -1,16 +1,16 @@
 import sys
 sys.path.append('/home/walaa-shaban/Documents/project/chatbot-llama3')
 import bs4
-from langchain_chroma import Chroma
+# from langchain_chroma import Chroma
 from langchain_community.document_loaders import WebBaseLoader
-from langchain_core.output_parsers import StrOutputParser
-from langchain_core.runnables import RunnablePassthrough
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain.document_loaders import PyPDFLoader
 from sentence_transformers import SentenceTransformer
 from src.embedding import embedding
 from langchain.llms import Ollama
 from langchain_core.prompts import PromptTemplate
+import chromadb
+from langchain.vectorstores import Chroma
 
 
 class ChatbotModel :
@@ -19,7 +19,11 @@ class ChatbotModel :
             "/home/walaa-shaban/Documents/project/chatbot-llama3/input/Introduction to Machine Learning with Python.pdf",
             "/home/walaa-shaban/Documents/project/chatbot-llama3/input/thebook.pdf"]
     
-    chunk_size,  embed_model, similarity, llm  = None
+    chunk_size = None
+    embed_model = None
+    similarity = None
+    llm  = None
+    retriver = None
     
     def input_doc(self):
         loader1 = WebBaseLoader(
@@ -37,17 +41,19 @@ class ChatbotModel :
         pages3 = loader3.load_and_split()
 
         pages = page1 + pages2 + pages3
-
+        print(pages[0])
         return pages
 
     def split_docs(self):
+        loader3 = PyPDFLoader("/home/walaa-shaban/Documents/project/chatbot-llama3/input/Introduction to Machine Learning with Python.pdf")
+        pages3 = loader3.load_and_split()
         text_splitters = RecursiveCharacterTextSplitter(chunk_size=self.chunk_size, chunk_overlap=100, add_start_index=True)
-        all_splits = text_splitters.split_documents(self.input_doc)
+        all_splits = text_splitters.split_documents(pages3)
         return all_splits
        
 
     def vector_db(self):
-        vector_database = Chroma.from_documents(documents=self.split_docs,embedding=embedding(self.embed_model))
+        vector_database = Chroma.from_documents(documents=self.split_docs(),embedding=embedding(self.embed_model))
         retriever = vector_database.as_retriever(search_type=self.similarity,search_kwargs={"k":4})
         return retriever
 
@@ -55,5 +61,9 @@ class ChatbotModel :
         self.chunk_size = chunk_size
         self.similarity = similarity
         self.embed_model = embed_model
+        self.retriver = self.vector_db()
         self.llm = Ollama(model="llama3:latest")
+
+
+    
 
