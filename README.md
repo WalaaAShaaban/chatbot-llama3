@@ -37,7 +37,7 @@ find two menu
 
  ### 1- **Chatbot_history** 🤖
 
- ![alt text](assert/chatbot.png)
+ ![alt text](assert/chat.png)
 #### Using streamlit chat for deployment
 - get data from url & pfd file
 - split documentaion to chunks
@@ -47,7 +47,7 @@ find two menu
 
  ### 2- **Comparisons result** ❓
 
- ![alt text](assert/chatbot.png)
+ 
 - Get answer the question with choose
     - type of similarity 
     - embedding model 

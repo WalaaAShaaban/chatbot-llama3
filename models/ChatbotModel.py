@@ -1,6 +1,7 @@
 import sys
-sys.path.append('C:\\Users\\Walaa Shaaban\\Documents\\chatbot-llama3')
+sys.path.append('/home/walaa-shaban/Documents/project/chatbot-llama3/')
 import bs4
+import streamlit as st
 # from langchain_chroma import Chroma
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -27,7 +28,7 @@ class ChatbotModel :
     
     def input_doc(self):
         loader1 = WebBaseLoader(
-        web_paths=(self.docs[0]),
+        web_paths=(self.docs[0],),
         bs_kwargs=dict(
             parse_only=bs4.SoupStrainer(class_=("post-header","post-content","post-title"))
         )
@@ -39,23 +40,25 @@ class ChatbotModel :
 
         loader3 = PyPDFLoader(self.docs[2])
         pages3 = loader3.load_and_split()
-
+        
         pages = page1 + pages2 + pages3
-        print(pages[0])
+        st.write("✅️ successfully uploaded documents")
         return pages
 
     def split_docs(self):
-        loader3 = PyPDFLoader("/home/walaa-shaban/Documents/project/chatbot-llama3/input/Introduction to Machine Learning with Python.pdf")
-        pages3 = loader3.load_and_split()
         text_splitters = RecursiveCharacterTextSplitter(chunk_size=self.chunk_size, chunk_overlap=100, add_start_index=True)
-        all_splits = text_splitters.split_documents(pages3)
+        all_splits = text_splitters.split_documents(self.input_doc())
         return all_splits
        
 
     def vector_db(self):
         vector_database = Chroma.from_documents(documents=self.split_docs(),embedding=embedding(self.embed_model))
         retriever = vector_database.as_retriever(search_type=self.similarity,search_kwargs={"k":4})
+        st.write("✅️ successfully saved documents in chroma db")
         return retriever
+
+
+   
 
     def __init__(self, chunk_size:int, embed_model, similarity:str) -> None:
         self.chunk_size = chunk_size
