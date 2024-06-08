@@ -1,5 +1,5 @@
 import sys
-sys.path.append('/home/walaa-shaban/Documents/project/chatbot-llama3')
+sys.path.append('C:\\Users\\Walaa Shaaban\\Documents\\chatbot-llama3')
 import streamlit as st
 from streamlit_chat import message as st_message
 from models.ChatbotModel import ChatbotModel 

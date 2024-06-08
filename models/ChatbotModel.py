@@ -1,5 +1,5 @@
 import sys
-sys.path.append('/home/walaa-shaban/Documents/project/chatbot-llama3')
+sys.path.append('C:\\Users\\Walaa Shaaban\\Documents\\chatbot-llama3')
 import bs4
 # from langchain_chroma import Chroma
 from langchain_community.document_loaders import WebBaseLoader
