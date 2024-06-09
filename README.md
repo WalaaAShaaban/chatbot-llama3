@@ -29,11 +29,10 @@ cd in path-folder
 
 ### Install 
 ```bash
-$ pip install requirements.txt
+$ pip install -r requirements.txt
 ```
 
 ## Deployment & use case
-find two menu
 
  ### 1- **Chatbot_history** 🤖
 
@@ -47,7 +46,12 @@ find two menu
 
  ### 2- **Comparisons result** ❓
 
- 
+ ![alt text](assert/comp1.png)
+
+ ![alt text](assert/comp2.png)
+
+ ![alt text](assert/comp3.png)
+
 - Get answer the question with choose
     - type of similarity 
     - embedding model 

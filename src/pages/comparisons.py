@@ -35,11 +35,8 @@ with col3:
         model_name = 'bert-base-uncased'
         embed_model = BertModel.from_pretrained(model_name)
 
-
-model = ChatbotModel(chunk_size=chunk, similarity=similarity, embed_model=embed_model)
-
 def format_docs(docs):
-    return "\n\n".join(doc.page_content for doc in docs)
+            return "\n\n".join(doc.page_content for doc in docs)
 
 template = """
 You are an AI bot developed , your role is to answer the users questions from the knowledge you know,
@@ -63,15 +60,14 @@ answer:
 """
 
 custom_rag_prompt = PromptTemplate.from_template(template)
-
+model = ChatbotModel(chunk_size=chunk, similarity=similarity, embed_model=embed_model)
 rag_chain = (
-    {"context": model.retriver | format_docs , 'question': RunnablePassthrough()}
-    | custom_rag_prompt
-    | model.llm
-    | StrOutputParser()
-)
-
-rag_chain.stream("how can using R2 in regression model?")
+            {"context": model.retriver | format_docs , 'question': RunnablePassthrough()}
+            | custom_rag_prompt
+            | model.llm
+            | StrOutputParser()
+        )
 
 question = st.text_input('input your question about documents...')
-st.write(rag_chain.invoke(question))
+if question:
+    st.write_stream(rag_chain.stream(question))
