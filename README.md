@@ -31,7 +31,9 @@ cd in path-folder
 ```bash
 $ pip install -r requirements.txt
 ```
-
+```bash
+$ steamlit run src/app.py 
+```
 ## Deployment & use case
 
  ### 1- **Chatbot_history** 🤖
